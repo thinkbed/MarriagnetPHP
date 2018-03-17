@@ -80,6 +80,11 @@ class Sql
         return $sth->rowCount();
     }
 
+    public function getLastInsertID()
+    {
+        return Db::pdo()->lastInsertId();
+    }
+
     public function update($id, $data)
     {
         $sql = sprintf("update `%s` set %s where `id` = :%s", $this->_table, $this->formatUpdate($data), $id);

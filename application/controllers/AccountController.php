@@ -1,29 +1,46 @@
 <?php
 
+class ErrorResult
+{
+    var $code;
+    var $error;
+}
+
+class RegisterResult
+{
+    var $createdAt;
+    var $objectId;
+    var $sessionToken;
+}
+
 class AccountController extends Controller
 {
     public function register()
     {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+        // $username = $_POST['username'];
+        // $password = $_POST['password'];
 
-        $register_result = (new AccountModel())->register($username, $password);
+        $postdata = file_get_contents("php://input");
+        $request = json_decode($postdata);
+        $username = $request->username;
+        $password = $request->password;
+        $email = $request->email;
+
+        $register_result = (new AccountModel())->register($username, $password, $email);
 
         if($register_result == 0)
         {
-            $msg = 'Register failed! Account already exists!';
+            $result = ["error" => 'Register failed! Account already exists!'];
+            echo json_encode($result);
         }
-        else if($register_result == 1)
+        else
         {
-            $msg = 'Register successfully!';
+            echo json_encode($register_result);
         }
 
         //$this->assign('title', '注册结果');
         //$this->assign('result', $msg);
         //$this->render();
-
-        $msg_json = json_encode($msg);
-        echo $msg_json;
     }
 
     public function login()

@@ -41,10 +41,10 @@ class Marriagnet
 
             array_shift($urlArray);
             $param = $urlArray ? $urlArray : array();
-
         }
 
         $controller = $controllerName.'Controller';
+
         if(!class_exists($controller)){
             exit($controller.' controller not exists.');
         }
@@ -55,6 +55,7 @@ class Marriagnet
         $dispatch = new $controller($controllerName, $actionName);
 
         call_user_func_array(array($dispatch, $actionName), $param);
+
     }
 
     public function setReporting()
